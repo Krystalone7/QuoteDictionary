@@ -1,1 +1,3 @@
 rootProject.name = 'QuoteDictionary'
+include 'krystal'
+
