@@ -24,7 +24,9 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
-    implementation group: 'org.liquibase', name: 'liquibase-core', version: '4.17.1'
+    implementation group: 'org.flywaydb', name: 'flyway-core', version: '9.7.0'
+
+
     implementation group: 'org.postgresql', name: 'postgresql', version: '42.5.0'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

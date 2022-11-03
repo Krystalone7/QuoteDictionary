@@ -2,15 +2,20 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
-  liquibase:
-    enabled: true
-    change-log: db/changelog/db.changelog-master.yaml
   datasource:
     driver-class-name:
       org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://db-1:5432/postgres
     username: postgres
     password: root
+  flyway:
+    schemas: public
+    out-of-order: true
+    enabled: true
+    user: postgres
+    password: root
+    default-schema: public
+
   jpa:
     show-sql: true
     properties:
@@ -18,4 +23,4 @@ spring:
         dialect:
           org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
