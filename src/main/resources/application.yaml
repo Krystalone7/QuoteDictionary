@@ -3,7 +3,8 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
   liquibase:
-    enabled: false
+    enabled: true
+    change-log: db/changelog/db.changelog-master.yaml
   datasource:
     driver-class-name:
       org.postgresql.Driver
@@ -17,4 +18,4 @@ spring:
         dialect:
           org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update

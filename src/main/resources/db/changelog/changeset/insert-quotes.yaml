@@ -1,0 +1,31 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-quotes
+      author: Artyom
+      changes:
+        - insert:
+            schemaName: public
+            tableName: quotes
+            columns:
+              - column:
+                  name: id
+                  value: 1
+              - column:
+                  name: text
+                  value: Галерка, заткнитесь!...
+              - column:
+                  name: author
+                  value: Кузьмин Юрий
+        - insert:
+            schemaName: public
+            tableName: quotes
+            columns:
+              - column:
+                  name: id
+                  value: 2
+              - column:
+                  name: text
+                  value: Сфера Римана, зачем?...
+              - column:
+                  name: author
+                  value: Кузьмин Юрий
