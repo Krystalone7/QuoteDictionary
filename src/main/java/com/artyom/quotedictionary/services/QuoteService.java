@@ -30,4 +30,17 @@ public class QuoteService {
     public void deleteQuote(Long id){
         quoteRepository.deleteQuoteById(id);
     }
+
+    public Quote updateQuote(Long quoteId, Quote quote){
+        if (quoteRepository.findById(quoteId).isPresent()){
+            Quote existingQuote = quoteRepository.findById(quoteId).get();
+
+            existingQuote.setAuthor(quote.getAuthor());
+            existingQuote.setText(quote.getText());
+
+            return quoteRepository.saveAndFlush(existingQuote);
+        } else{
+            return null;
+        }
+    }
 }
