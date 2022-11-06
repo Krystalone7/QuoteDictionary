@@ -55,11 +55,7 @@ public class QuoteController {
         Quote updatedQuote = quoteService.updateQuote(
                 quoteId,
                 new Quote(quoteCreationDto.getText(), quoteCreationDto.getAuthor()));
-        if (updatedQuote == null){
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }else{
-            return new ResponseEntity<>(updatedQuote, HttpStatus.OK);
-        }
+        return new ResponseEntity<>(updatedQuote, HttpStatus.OK);
     }
 
     @ApiOperation("Удалить цитату по id")
