@@ -1,43 +1,47 @@
 package com.artyom.quotedictionary.services;
 
 import com.artyom.quotedictionary.controllers.advice.exceptions.QuoteNotFoundException;
+import com.artyom.quotedictionary.dto.QuoteDto;
 import com.artyom.quotedictionary.entities.Quote;
 import com.artyom.quotedictionary.repo.QuoteRepository;
+import com.artyom.quotedictionary.services.mappers.QuoteMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class QuoteService {
 
     private final QuoteRepository quoteRepository;
 
-    public QuoteService(QuoteRepository quoteRepository) {
-        this.quoteRepository = quoteRepository;
+    private final QuoteMapper quoteMapper;
+
+    public List<QuoteDto> getAll(){
+        return quoteMapper.mapToDtoList(quoteRepository.findAll());
     }
 
-    public List<Quote> getAll(){
-        return quoteRepository.findAll();
+    public QuoteDto addQuote(QuoteDto quoteDto){
+        Quote quote = quoteMapper.mapToQuote(quoteDto);
+        quoteRepository.saveAndFlush(quote);
+        return quoteMapper.mapToDto(quote);
     }
 
-    public Quote addQuote(Quote quote){
-        return quoteRepository.saveAndFlush(quote);
-    }
-
-    public List<Quote> findQuotesByAuthor(String author){
-        return quoteRepository.findQuotesByAuthor(author);
+    public List<QuoteDto> findQuotesByAuthor(String author){
+        return quoteMapper.mapToDtoList(quoteRepository.findQuotesByAuthor(author));
     }
 
     public void deleteQuote(Long id){
         quoteRepository.deleteQuoteById(id);
     }
 
-    public Quote updateQuote(Long quoteId, Quote quote){
+    public QuoteDto updateQuote(Long quoteId, QuoteDto quoteDto){
         Quote existingQuote = quoteRepository.findQuoteById(quoteId).orElse(null);
         if (existingQuote != null){
-            existingQuote.setAuthor(quote.getAuthor());
-            existingQuote.setText(quote.getText());
-            return quoteRepository.saveAndFlush(existingQuote);
+            existingQuote.setAuthor(quoteDto.getAuthor());
+            existingQuote.setText(quoteDto.getText());
+            return quoteMapper.mapToDto(quoteRepository.saveAndFlush(existingQuote));
         } else{
             throw new QuoteNotFoundException(quoteId.toString());
         }

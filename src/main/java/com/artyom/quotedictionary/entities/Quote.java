@@ -14,7 +14,6 @@ import javax.persistence.Table;
 
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 @Setter
 @Getter
 @Table(name = "quotes")
