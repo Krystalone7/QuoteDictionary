@@ -1,5 +1,6 @@
 package com.artyom.quotedictionary.services;
 
+import com.artyom.quotedictionary.controllers.advice.exceptions.QuoteNotFoundException;
 import com.artyom.quotedictionary.entities.Quote;
 import com.artyom.quotedictionary.repo.QuoteRepository;
 import org.springframework.stereotype.Service;
@@ -32,15 +33,13 @@ public class QuoteService {
     }
 
     public Quote updateQuote(Long quoteId, Quote quote){
-        if (quoteRepository.findById(quoteId).isPresent()){
-            Quote existingQuote = quoteRepository.findById(quoteId).get();
-
+        Quote existingQuote = quoteRepository.findQuoteById(quoteId).orElse(null);
+        if (existingQuote != null){
             existingQuote.setAuthor(quote.getAuthor());
             existingQuote.setText(quote.getText());
-
             return quoteRepository.saveAndFlush(existingQuote);
         } else{
-            return null;
+            throw new QuoteNotFoundException(quoteId.toString());
         }
     }
 }
