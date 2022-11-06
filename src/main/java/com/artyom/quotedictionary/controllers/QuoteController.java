@@ -1,8 +1,9 @@
 package com.artyom.quotedictionary.controllers;
 
-import com.artyom.quotedictionary.dto.QuoteCreationDto;
+import com.artyom.quotedictionary.dto.QuoteDto;
 import com.artyom.quotedictionary.entities.Quote;
 import com.artyom.quotedictionary.services.QuoteService;
+import com.artyom.quotedictionary.services.mappers.QuoteMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
@@ -26,36 +27,39 @@ public class QuoteController {
 
     private final QuoteService quoteService;
 
-    public QuoteController(QuoteService quoteService) {
+    private final QuoteMapper quoteMapper;
+
+    public QuoteController(QuoteService quoteService, QuoteMapper quoteMapper) {
         this.quoteService = quoteService;
+        this.quoteMapper = quoteMapper;
     }
 
     @ApiOperation("Получить все цитаты")
     @GetMapping("all")
-    public ResponseEntity<List<Quote>> getAll(){
-        return new ResponseEntity<>(quoteService.getAll(), HttpStatus.OK);
+    public ResponseEntity<List<QuoteDto>> getAll(){
+        return new ResponseEntity<>(quoteMapper.mapToDtoList(quoteService.getAll()), HttpStatus.OK);
     }
 
     @ApiOperation("Добавить цитату")
     @PostMapping("add")
-    public ResponseEntity<Quote> addQuote(@RequestBody QuoteCreationDto quoteCreationDto){
+    public ResponseEntity<QuoteDto> addQuote(@RequestBody QuoteDto quoteDto){
         return new ResponseEntity<>(
-                quoteService.addQuote(new Quote(quoteCreationDto.getText(), quoteCreationDto.getAuthor())), HttpStatus.OK);
+                quoteMapper.mapToDto(quoteService.addQuote(quoteMapper.mapToQuote(quoteDto))), HttpStatus.OK);
     }
 
     @ApiOperation("Поиск цитат по автору")
     @GetMapping("{author}")
-    public ResponseEntity<List<Quote>> findByAuthor(@PathVariable String author){
-        return new ResponseEntity<>(quoteService.findQuotesByAuthor(author), HttpStatus.OK);
+    public ResponseEntity<List<QuoteDto>> findByAuthor(@PathVariable String author){
+        return new ResponseEntity<>(quoteMapper.mapToDtoList(quoteService.findQuotesByAuthor(author)), HttpStatus.OK);
     }
 
     @ApiOperation("Изменение цитаты по id")
     @PutMapping("{quoteId}")
-    public ResponseEntity<Quote> updateQuote(@PathVariable Long quoteId, @RequestBody QuoteCreationDto quoteCreationDto){
+    public ResponseEntity<QuoteDto> updateQuote(@PathVariable Long quoteId, @RequestBody QuoteDto quoteDto){
         Quote updatedQuote = quoteService.updateQuote(
                 quoteId,
-                new Quote(quoteCreationDto.getText(), quoteCreationDto.getAuthor()));
-        return new ResponseEntity<>(updatedQuote, HttpStatus.OK);
+                quoteMapper.mapToQuote(quoteDto));
+        return new ResponseEntity<>(quoteMapper.mapToDto(updatedQuote), HttpStatus.OK);
     }
 
     @ApiOperation("Удалить цитату по id")
