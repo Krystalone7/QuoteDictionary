@@ -12,7 +12,9 @@ services:
       - POSTGRES_PASSWORD=root
 
   quote-dictionary:
-    build: ./
+    image: "quote-dictionary"
+    build:
+      context: .
     depends_on:
       - db
     ports:
