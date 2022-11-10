@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,8 +30,6 @@ public class QuoteController {
 
     private final QuoteService quoteService;
 
-    private final QuoteMapper quoteMapper;
-
     @ApiOperation("Получить все цитаты")
     @GetMapping("all")
     public ResponseEntity<List<QuoteDto>> getAll(){
@@ -39,6 +38,7 @@ public class QuoteController {
 
     @ApiOperation("Добавить цитату")
     @PostMapping("add")
+    @PreAuthorize("hasAnyAuthority('user')")
     public ResponseEntity<QuoteDto> addQuote(@RequestBody QuoteDto quoteDto){
         return new ResponseEntity<>(quoteService.addQuote(quoteDto), HttpStatus.OK);
     }
@@ -51,6 +51,7 @@ public class QuoteController {
 
     @ApiOperation("Изменение цитаты по id")
     @PutMapping("{quoteId}")
+    @PreAuthorize("hasAnyAuthority('admin')")
     public ResponseEntity<QuoteDto> updateQuote(@PathVariable Long quoteId, @RequestBody QuoteDto quoteDto){
         return new ResponseEntity<>(quoteService.updateQuote(quoteId, quoteDto), HttpStatus.OK);
     }
@@ -58,6 +59,7 @@ public class QuoteController {
     @ApiOperation("Удалить цитату по id")
     @DeleteMapping("delete/{quoteId}")
     @Transactional
+    @PreAuthorize("hasAnyAuthority('admin')")
     public void deleteQuote(@PathVariable Long quoteId){
         quoteService.deleteQuote(quoteId);
     }

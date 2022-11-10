@@ -24,3 +24,6 @@ spring:
           org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: validate
+jwt:
+  secret: secret
+  time-life: 30
