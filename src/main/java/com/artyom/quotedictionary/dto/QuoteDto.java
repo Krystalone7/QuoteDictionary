@@ -5,14 +5,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
 @Getter
-public class QuoteCreationDto {
+public class QuoteDto {
 
     private final String text;
     private final String author;
 
     @JsonCreator
-    public QuoteCreationDto(@JsonProperty("text") String text,
-                            @JsonProperty("author") String author){
+    public QuoteDto(@JsonProperty("text") String text,
+                    @JsonProperty("author") String author){
         this.text = text;
         this.author = author;
     }

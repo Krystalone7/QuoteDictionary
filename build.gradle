@@ -25,11 +25,11 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
     implementation group: 'org.flywaydb', name: 'flyway-core', version: '9.7.0'
-
-
     implementation group: 'org.postgresql', name: 'postgresql', version: '42.5.0'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation group: 'org.mockito', name: 'mockito-core', version: '4.6.1'
+    testImplementation group: 'junit', name: 'junit', version: '4.13.2'
 }
 
 
