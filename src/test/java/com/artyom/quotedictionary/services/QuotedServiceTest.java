@@ -38,7 +38,6 @@ public class QuotedServiceTest {
     @Test
     public void addQuoteTest(){
         QuoteDto quoteDto = new QuoteDto("Test quote", "MegaAuthor");
-        when(quoteRepository.saveAndFlush(any(Quote.class))).thenReturn(null);
         QuoteDto addedQuote = quoteService.addQuote(quoteDto);
         Assertions.assertEquals(quoteDto.getAuthor(), addedQuote.getAuthor());
         Assertions.assertEquals(quoteDto.getText(), addedQuote.getText());

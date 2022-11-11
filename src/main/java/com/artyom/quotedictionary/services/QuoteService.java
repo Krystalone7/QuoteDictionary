@@ -37,13 +37,9 @@ public class QuoteService {
     }
 
     public QuoteDto updateQuote(Long quoteId, QuoteDto quoteDto){
-        Quote existingQuote = quoteRepository.findQuoteById(quoteId).orElse(null);
-        if (existingQuote != null){
-            existingQuote.setAuthor(quoteDto.getAuthor());
-            existingQuote.setText(quoteDto.getText());
-            return quoteMapper.mapToDto(quoteRepository.saveAndFlush(existingQuote));
-        } else{
-            throw new QuoteNotFoundException(quoteId.toString());
-        }
+        Quote existingQuote = quoteRepository.findQuoteById(quoteId).orElseThrow(() -> new QuoteNotFoundException(quoteId.toString()));
+        existingQuote.setAuthor(quoteDto.getAuthor());
+        existingQuote.setText(quoteDto.getText());
+        return quoteMapper.mapToDto(quoteRepository.saveAndFlush(existingQuote));
     }
 }
