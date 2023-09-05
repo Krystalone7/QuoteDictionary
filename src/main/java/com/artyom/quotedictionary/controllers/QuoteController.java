@@ -2,21 +2,16 @@ package com.artyom.quotedictionary.controllers;
 
 import com.artyom.quotedictionary.dto.QuoteDto;
 import com.artyom.quotedictionary.entities.Quote;
+import com.artyom.quotedictionary.kafka.Producer;
 import com.artyom.quotedictionary.services.QuoteService;
 import com.artyom.quotedictionary.services.mappers.QuoteMapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -31,6 +26,8 @@ public class QuoteController {
 
     private final QuoteMapper quoteMapper;
 
+    private final Producer producer;
+
     @ApiOperation("Получить все цитаты")
     @GetMapping("all")
     public ResponseEntity<List<QuoteDto>> getAll(){
@@ -41,6 +38,11 @@ public class QuoteController {
     @PostMapping("add")
     public ResponseEntity<QuoteDto> addQuote(@RequestBody QuoteDto quoteDto){
         return new ResponseEntity<>(quoteService.addQuote(quoteDto), HttpStatus.OK);
+    }
+
+    @GetMapping("send")
+    public void addQuote(@RequestParam("kafka_key") String key) throws JsonProcessingException {
+        producer.sendEvent(key);
     }
 
     @ApiOperation("Поиск цитат по автору")

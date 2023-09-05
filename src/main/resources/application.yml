@@ -24,3 +24,9 @@ spring:
           org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: validate
+kafka:
+  bootstrapAddress: "localhost:9091"
+  groupId: "group1"
+server:
+  port: 8081
+
